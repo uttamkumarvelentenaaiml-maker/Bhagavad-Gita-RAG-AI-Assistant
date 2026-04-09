@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bhagavad Gita AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="main">
+
+    <h1>Bhagavad Gita AI</h1>
+
+    <div class="input-area">
+        <input id="prompt" placeholder="Seek guidance...">
+        <button onclick="askAI()">Ask</button>
+    </div>
+
+    <div id="output">Wisdom will appear here</div>
+
+</div>
+
+<script>
+async function askAI() {
+    let prompt = document.getElementById("prompt").value;
+    let output = document.getElementById("output");
+
+    if (!prompt) {
+        output.innerText = "Please ask something";
+        return;
+    }
+
+    output.innerText = "Reflecting...";
+
+    let res = await fetch("/ask", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ query: prompt })
+    });
+
+    let data = await res.json();
+    output.innerText = data.response;
+}
+</script>
+
+</body>
+</html>
